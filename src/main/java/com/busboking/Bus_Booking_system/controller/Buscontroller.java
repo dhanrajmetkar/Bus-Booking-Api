@@ -25,7 +25,7 @@ public class Buscontroller {
         return busservice.save(bus);
     }
 
-    @PostMapping("/parseDate")
+    @PostMapping("/AddBooking")
     public String parseDate(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) throws ParseException {
 
        return busservice.checkAvailable(date.toString());
