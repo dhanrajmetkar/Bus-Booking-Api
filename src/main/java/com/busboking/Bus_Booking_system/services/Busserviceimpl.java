@@ -67,7 +67,9 @@ public class Busserviceimpl implements Busservice{
                 }
             }
     }
+
         dateRequest.setDate(request.getDate());
+        dateRequest.setCustomerDetails(null);
         dateRequest.setBookingStatus("Ticket Not Booked Check For Another Date");
         return dateRequest;
     }
