@@ -1,5 +1,6 @@
 package com.busboking.Bus_Booking_system.controller;
 import com.busboking.Bus_Booking_system.entity.Bus;
+import com.busboking.Bus_Booking_system.entity.CustomerDetails;
 import com.busboking.Bus_Booking_system.entity.DateRequest;
 import com.busboking.Bus_Booking_system.services.Busservice;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,9 @@ public class Buscontroller {
     {
         return busservice.save(bus);
     }
-
     @PostMapping("/AddBooking")
-    public String parseDate(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) throws ParseException {
-
-       return busservice.checkAvailable(date.toString());
-
-
+    public DateRequest parseDate(@RequestBody DateRequest request) throws ParseException {
+        return busservice.checkAvailable(request);
     }
+
 }
