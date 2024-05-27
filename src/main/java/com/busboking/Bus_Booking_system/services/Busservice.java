@@ -1,14 +1,13 @@
 package com.busboking.Bus_Booking_system.services;
-
 import com.busboking.Bus_Booking_system.entity.Bus;
-
 import java.text.ParseException;
-import java.util.Date;
+import java.util.List;
 
 public interface Busservice {
-    String getBus();
 
-    String checkAvailable(Date date) throws ParseException;
+    String checkAvailable(String date) throws ParseException;
 
     Bus save(Bus bus);
+
+    List<Bus> getAllBuses();
 }

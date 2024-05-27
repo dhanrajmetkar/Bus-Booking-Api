@@ -32,27 +32,19 @@ public class Bus {
     BusRoute busRoute;
     String dates;
 
-
-    public List<Date> getDates() {
+    public List<String> getDates() {
         if (this.dates==null)
             return null;
-        return Arrays.stream(dates.split(","))
-                .map(dateStr -> {
-                    try {
-                        return new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
-                    } catch (ParseException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .collect(Collectors.toList());
+        return List.of(dates.split(","));
     }
 
-    public void setDates(List<Date> dates) {
-        if(dates.size()==0)
-            return;
-        this.dates = dates.stream()
-                .map(date -> new  SimpleDateFormat("dd/MM/yyyy").format(date))
-                .collect(Collectors.joining(","));
+    public void setDates(String date) {
+        if(this.dates==null) {
+            this.dates = date;
+        }
+        else {
+        this.dates = dates+","+date;
+    }
     }
 
 }
