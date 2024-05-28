@@ -18,10 +18,19 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(
+        uniqueConstraints = @UniqueConstraint(
+                name = "busId",
+                columnNames = "busId"
+        )
+)
 public class Bus {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
+    @Column(
+            nullable = false
+    )
     String busId;
     Integer fare;
     @Embedded
@@ -30,21 +39,12 @@ public class Bus {
             @AttributeOverride(name="d", column=@Column(name="destination"))
     })
     BusRoute busRoute;
-    String dates;
-
-    public List<String> getDates() {
-        if (this.dates==null)
-            return null;
-        return List.of(dates.split(","));
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "related_key_id")
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="values", column=@Column(name="values"))
+    })
+    private KeyTable keyTable;
     }
 
-    public void setDates(String date) {
-        if(this.dates==null) {
-            this.dates = date;
-        }
-        else {
-        this.dates = dates+","+date;
-    }
-    }
-
-}
