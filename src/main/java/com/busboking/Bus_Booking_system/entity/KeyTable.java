@@ -21,7 +21,15 @@ public class KeyTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Integer id;
     private  String busId;
-
     @OneToMany(mappedBy = "keyTable", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ValueTable> values = new ArrayList<>();
+    private List<ValueTable> valueTables;
+
+    public void setValueTables(List<ValueTable> valueTables) {
+        this.valueTables = valueTables;
+    }
+
+    public boolean isEmptyKeyTable() {
+        return valueTables == null || valueTables.isEmpty();
+    }
+
 }

@@ -1,14 +1,10 @@
 package com.busboking.Bus_Booking_system.controller;
 import com.busboking.Bus_Booking_system.entity.Bus;
-import com.busboking.Bus_Booking_system.entity.CustomerDetails;
 import com.busboking.Bus_Booking_system.entity.DateRequest;
 import com.busboking.Bus_Booking_system.services.Busservice;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController

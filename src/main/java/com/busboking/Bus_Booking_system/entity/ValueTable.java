@@ -6,9 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Service
@@ -17,10 +15,13 @@ import java.util.Date;
 @Builder
 @Data
 public class ValueTable {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne
+
+    private LocalDate date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "key_id")
     private KeyTable keyTable;
-    private LocalDate date;
 }

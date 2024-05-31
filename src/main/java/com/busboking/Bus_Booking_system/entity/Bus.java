@@ -6,13 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -29,8 +22,10 @@ public class Bus {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
     @Column(
+            unique = true,
             nullable = false
     )
+
     String busId;
     Integer fare;
     @Embedded
@@ -39,12 +34,15 @@ public class Bus {
             @AttributeOverride(name="d", column=@Column(name="destination"))
     })
     BusRoute busRoute;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "related_key_id")
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name="values", column=@Column(name="values"))
-    })
+
+    @ManyToOne
+    @JoinColumn(name = "key_table_id")
     private KeyTable keyTable;
+
+    public boolean isEmptyKeytable() {
+        return keyTable == null || keyTable.isEmptyKeyTable();
+    }
+
+
     }
 
