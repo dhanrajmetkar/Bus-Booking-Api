@@ -13,6 +13,6 @@ public class CustomerDetails {
     private String busId;
     private String customerName;
     private String contact;
-    private BusRoute route;
+    private BusRoute busRoute;
     private double totalFare;
 }
