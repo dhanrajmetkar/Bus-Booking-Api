@@ -18,10 +18,10 @@ public class ValueTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private LocalDate date;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "key_id")
+    @ManyToOne(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name = "keyId", referencedColumnName = "id")
     private KeyTable keyTable;
 }

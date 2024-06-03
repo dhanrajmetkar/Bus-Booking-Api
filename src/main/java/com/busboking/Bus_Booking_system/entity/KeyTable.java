@@ -1,5 +1,6 @@
 package com.busboking.Bus_Booking_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-@Embeddable
+import java.util.Objects;
+
 @Service
 @Entity
 @Data
@@ -20,16 +22,31 @@ public class KeyTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Integer id;
-    private  String busId;
-    @OneToMany(mappedBy = "keyTable", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ValueTable> valueTables;
-
-    public void setValueTables(List<ValueTable> valueTables) {
-        this.valueTables = valueTables;
+    @OneToOne(
+            cascade =CascadeType.ALL
+    )
+    @JoinColumn(name = "bid", referencedColumnName = "bid")
+    @JsonManagedReference
+    private Bus bus;
+    private String busIdString;
+    @OneToMany(
+            mappedBy = "keyTable",
+            cascade = CascadeType.ALL,
+            fetch =FetchType.EAGER
+    )
+    private  List<ValueTable> valueTables=new ArrayList<>();
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, busIdString);
     }
 
-    public boolean isEmptyKeyTable() {
-        return valueTables == null || valueTables.isEmpty();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        KeyTable keyTable = (KeyTable) o;
+        return Objects.equals(id, keyTable.id) &&
+                Objects.equals(busIdString, keyTable.busIdString);
     }
 
 }

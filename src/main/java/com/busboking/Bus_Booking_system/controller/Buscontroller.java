@@ -24,6 +24,7 @@ public class Buscontroller {
     @PostMapping("/AddBooking")
     public DateRequest parseDate(@RequestBody DateRequest request) throws ParseException {
         return busservice.checkAvailable(request);
+
     }
 
 }

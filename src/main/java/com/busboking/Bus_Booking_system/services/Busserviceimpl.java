@@ -7,7 +7,6 @@ import com.busboking.Bus_Booking_system.repository.ValueTableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,7 +19,7 @@ public class Busserviceimpl implements Busservice{
     @Autowired
     DateRequest dateRequest;
     @Autowired
-    KeyValueService keyValueService;
+    KeyTablesrvice keyTablesrvice;
     @Autowired
     KeyTableRepository keyTableRepository;
     @Autowired
@@ -36,23 +35,15 @@ public class Busserviceimpl implements Busservice{
              return dateRequest;
         }
         for (Bus bus : buses) {
-            if (bus.isEmptyKeytable()) {
-                KeyTable keyTable = new KeyTable();
-                keyTable.setBusId(bus.getBusId());
-                ValueTable valueTable = new ValueTable();
+            if (bus.getKeyTable()==null) {
+                KeyTable keyTable=new KeyTable();
+              keyTable.setBusIdString(bus.getBusId());
+                ValueTable valueTable=new ValueTable();
                 valueTable.setDate(request.getDate());
-
-                List<ValueTable> values = keyTable.getValueTables();
-                if (values == null) {
-                    values = new ArrayList<>();
-                    keyTable.setValueTables(values);
-                }else {
-
-                values.add(valueTable);
-                }
-                keyTable.setValueTables(values);
-                //keyValueService.saveKeyValuePair(keyTable);
-                keyTable = keyTableRepository.save(keyTable);
+                valueTable.setKeyTable(keyTable);
+                keyTable.getValueTables().add(valueTable);
+                keyTable.setBus(bus);
+                keyTableRepository.save(keyTable);
                 bus.setKeyTable(keyTable);
                 busRepository.save(bus);
                 String busid = bus.getBusId();
@@ -66,26 +57,46 @@ public class Busserviceimpl implements Busservice{
                 dateRequest.setBookingStatus("Ticked Booked");
                 return dateRequest;
             }
+            else {
+                boolean flag=false;
+               KeyTable k1=keyTableRepository.findByBusIdString(bus.getBusId());
+                List<ValueTable> valueTables  = keyTableRepository.findByBusIdStringValueTable(bus.getBusId());
+               for (ValueTable valueTable:valueTables) {
+                   if (valueTable.getDate().equals(request.getDate())) {
+                       flag = true;
+                   }
+               }
+                   if(!flag) {
+                       ValueTable v1=new ValueTable();
+                       v1.setDate(request.getDate());
+                       v1.setKeyTable(k1);
+                       k1.getValueTables().add(v1);
+                       k1.setBus(bus);
+                       keyTableRepository.save(k1);
+                       bus.setKeyTable(k1);
+                       busRepository.save(bus);
+                       String busid = bus.getBusId();
+                       customerDetails.setCustomerName(request.getCustomerDetails().getCustomerName());
+                       customerDetails.setContact(request.getCustomerDetails().getContact());
+                       customerDetails.setBusId(busid);
+                       customerDetails.setRoute(bus.getBusRoute());
+                       customerDetails.setTotalFare(bus.getFare());
+                       dateRequest.setDate(request.getDate());
+                       dateRequest.setCustomerDetails(customerDetails);
+                       dateRequest.setBookingStatus("Ticked Booked");
+                       return dateRequest;
+                   }
+               }
 
-        }
+            }
         dateRequest.setDate(request.getDate());
         dateRequest.setCustomerDetails(null);
         dateRequest.setBookingStatus("Ticket Not Booked Check For Another Date");
         return dateRequest;
-
-
     }
 
     @Override
     public Bus save(Bus bus) {
-        KeyTable keyTable = bus.getKeyTable();
-        if (keyTable != null && keyTable.getId() == null) {
-            keyTableRepository.save(keyTable);
-            for (ValueTable valueTable : keyTable.getValueTables()) {
-                valueTable.setKeyTable(keyTable);
-                valueTableRepository.save(valueTable);
-            }
-        }
         return busRepository.save(bus);
     }
     @Override

@@ -11,33 +11,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class KeyValueServiceimpl implements KeyValueService{
-
+public class KeyValueServiceimpl implements KeyTablesrvice{
     @Autowired
-    KeyTableRepository keyTableRepository;
+    private KeyTableRepository keyTableRepository;
+
     @Override
-    public void saveKeyValuePair(KeyTable keyTable) {
-        KeyTable keyTable1=new KeyTable();
-        keyTable1.setBusId(keyTable.getBusId());
-        for (ValueTable value : keyTable.getValueTables()) {
-          value.setKeyTable(keyTable1);
-          keyTable1.getValueTables().add(value);
-        }
-        keyTableRepository.save(keyTable1);
+    public KeyTable getKeyTableByBusIdString(String busIdString) {
+        return keyTableRepository.findByBusIdString(busIdString);
     }
 
-    @Autowired
-    private ValueTableRepository valueTableRepository;
 
-    @Transactional
-    public void addValueTableToKeyTable(Integer keyTableId, ValueTable valueTable) {
-        KeyTable keyTable = keyTableRepository.findById(keyTableId).orElseThrow(() -> new RuntimeException("KeyTable not found"));
-        valueTable.setKeyTable(keyTable);
-        valueTableRepository.save(valueTable);
-    }
-
-    public List<ValueTable> getValueTablesByKeyTable(Integer keyTableId) {
-        KeyTable keyTable = keyTableRepository.findById(keyTableId).orElseThrow(() -> new RuntimeException("KeyTable not found"));
-        return keyTable.getValueTables();
-    }
 }
