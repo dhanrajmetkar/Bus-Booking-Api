@@ -26,5 +26,10 @@ public class Buscontroller {
         return busservice.checkAvailable(request);
 
     }
+    @GetMapping("/get")
+    public List<Bus> get(){
+        return busservice.findByRouteSourceAndRouteDestination("mumbai","pune");
+
+    }
 
 }

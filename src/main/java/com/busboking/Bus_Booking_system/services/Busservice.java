@@ -11,4 +11,5 @@ public interface Busservice {
     Bus save(Bus bus);
 
     List<Bus> getAllBuses();
+    List<Bus> findByRouteSourceAndRouteDestination(String souce, String destination);
 }

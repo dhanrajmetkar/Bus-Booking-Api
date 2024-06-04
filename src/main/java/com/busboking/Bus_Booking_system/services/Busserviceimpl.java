@@ -27,7 +27,8 @@ public class Busserviceimpl implements Busservice{
 
     @Override
     public DateRequest checkAvailable(DateRequest request) throws ParseException {
-        List<Bus> buses = busRepository.findAll();
+
+        List<Bus> buses = findByRouteSourceAndRouteDestination(request.getBusRoute().getS(),request.getBusRoute().getD());
         boolean busRoute = false;
         if (0 >= buses.size()) {
             dateRequest.setDate(request.getDate());
@@ -62,8 +63,8 @@ public class Busserviceimpl implements Busservice{
                     return dateRequest;
                 } else {
                     boolean flag = false;
-                    KeyTable k1 = keyTableRepository.findByBusIdString(bus.getBusId());
-                    List<ValueTable> valueTables = keyTableRepository.findByBusIdStringValueTable(bus.getBusId());
+                    KeyTable k1 = keyTablesrvice.findByBusIdString(bus.getBusId());
+                    List<ValueTable> valueTables = keyTablesrvice.findByBusIdStringValueTable(bus.getBusId());
                     for (ValueTable valueTable : valueTables) {
                         if (valueTable.getDate().equals(request.getDate())) {
                             flag = true;
@@ -114,5 +115,10 @@ public class Busserviceimpl implements Busservice{
     @Override
     public List<Bus> getAllBuses() {
         return busRepository.findAll();
+    }
+
+    @Override
+    public List<Bus> findByRouteSourceAndRouteDestination(String souce, String destination) {
+        return busRepository.findByBusRoute_SAndBusRoute_D(souce, destination);
     }
 }
