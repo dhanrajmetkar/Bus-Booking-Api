@@ -24,7 +24,7 @@ public class BusRoute {
             return false;
         }
         BusRoute other = (BusRoute) o;
-        return this.s == other.s && this.d==other.d;
+        return this.s.equals( other.s) && this.d.equals(other.d);
     }
 
     @Override
