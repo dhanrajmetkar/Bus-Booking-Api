@@ -7,9 +7,7 @@ import java.util.List;
 public interface Busservice {
 
     DateRequest checkAvailable(DateRequest date) throws ParseException;
-
     Bus save(Bus bus);
-
-    List<Bus> getAllBuses();
+    List<Bus> getAllAvailableBuses(DateRequest request);
     List<Bus> findByRouteSourceAndRouteDestination(String souce, String destination);
 }

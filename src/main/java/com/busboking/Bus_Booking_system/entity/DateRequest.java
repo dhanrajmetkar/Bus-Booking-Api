@@ -2,6 +2,7 @@ package com.busboking.Bus_Booking_system.entity;
 
 import com.busboking.Bus_Booking_system.repository.BusRepository;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class DateRequest {
     private LocalDate date;
     CustomerDetails customerDetails;

@@ -11,25 +11,18 @@ import java.util.List;
 public class Buscontroller {
     @Autowired
     Busservice busservice;
-    @GetMapping("/getAllBuses")
-    public List<Bus> getAllBuses()
-    {
-        return busservice.getAllBuses();
-    }
+
     @PostMapping("/saveBus")
     public Bus saveBus(@RequestBody Bus bus)
     {
         return busservice.save(bus);
     }
+
     @PostMapping("/AddBooking")
-    public DateRequest parseDate(@RequestBody DateRequest request) throws ParseException {
+    public DateRequest parseDate(@RequestBody DateRequest request) throws ParseException
+    {
         return busservice.checkAvailable(request);
-
     }
-    @GetMapping("/get")
-    public List<Bus> get(){
-        return busservice.findByRouteSourceAndRouteDestination("mumbai","pune");
 
-    }
 
 }
